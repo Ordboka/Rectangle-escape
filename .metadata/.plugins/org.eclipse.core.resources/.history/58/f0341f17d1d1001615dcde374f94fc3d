@@ -1,0 +1,23 @@
+package ord.boka.game;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+public class Main{
+	
+		final static String NAMEOFGAME = "Rectangle Escape";
+		final static int WIDTH = 1000; final static int HEIGHT = WIDTH;
+	
+		static JFrame openWindow(int x, int y, String title){
+			JFrame myFrame = new JFrame(title);
+	        myFrame.setSize(x,y);
+	        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	        myFrame.setVisible(true);
+	        return myFrame;
+		}
+	public static void main(String[] args){
+		JFrame myFrame = new JFrame();
+		myFrame = Main.openWindow(WIDTH,HEIGHT,NAMEOFGAME);
+		
+	}
+}

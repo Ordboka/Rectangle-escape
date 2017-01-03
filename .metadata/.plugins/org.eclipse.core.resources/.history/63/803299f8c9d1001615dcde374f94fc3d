@@ -1,0 +1,18 @@
+package ord.boka.game;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+public class Main {
+		static JFrame openWindow(){
+			JFrame myFrame = new JFrame("Sample Frame");
+	        myFrame.setSize(300,400);
+	        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	        
+	        return myFrame;
+		}
+	public static void main(String[] args){
+		JFrame myFrame = openWindow();
+		myFrame.setVisible(true);
+	}
+}
