@@ -2,6 +2,10 @@ package ord.boka.game;
 
 import java.awt.Color;
 
+/**
+ * @author Benjamin Buan
+ *
+ */
 public class Ball {
 	
 	private int up, down, left, right;
@@ -26,6 +30,9 @@ public class Ball {
 		this.right = right;
 		this.color = color;
 	}
+	/**
+	 * Increases the x and y coordinates of the ball with ballXSpeed and ballYSpeed
+	 */
 	public void moveBall(){
 		ballX+=ballXSpeed;
 		ballY+=ballYSpeed;
