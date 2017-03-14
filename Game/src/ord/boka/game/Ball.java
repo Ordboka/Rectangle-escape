@@ -6,7 +6,7 @@ import java.awt.Color;
  * @author Benjamin Buan
  *
  */
-public class Ball {
+public class Ball implements DrawableObject{
 	
 	private int up, down, left, right;
 	private Color color;
@@ -82,5 +82,14 @@ public class Ball {
 	}
 	public void xReleased(){
 		ballXSpeed = 0;
+	}
+	@Override
+	public int getHeight() {
+		return BALLDIAMETER;
+	}
+	@Override
+	public int getWidth() {
+		// TODO Auto-generated method stub
+		return BALLDIAMETER;
 	}
 }

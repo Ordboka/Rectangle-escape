@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,7 +18,8 @@ public class Main extends JPanel{
 
 		public final static String NAMEOFGAME = "Rectangle Escape";
 		public final static int WIDTH = 500, HEIGHT = 500;
-		private ArrayList<Ball> balls = new ArrayList<Ball>();
+		private Collection<Ball> balls = new ArrayList<Ball>();
+		private Collection<Wall> walls = new ArrayList<Wall>();
 		
 		public Main(){
 			setPreferredSize(new Dimension(WIDTH,HEIGHT));
@@ -36,17 +38,29 @@ public class Main extends JPanel{
 				g2d.setColor(ball.getColor());
 				g2d.fillOval(ball.getX(), ball.getY(), Ball.BALLDIAMETER, Ball.BALLDIAMETER);
 			}
-			
-		}
-		
-		public void moveBall(){
-			for(Ball ball: balls){
-				ball.moveBall();
+			for(Wall wall: walls){
+				g2d.setColor(Color.GREEN);
+				g2d.fillRect(wall.getX(), wall.getY(), wall.getWidth(), wall.getHeight());
 			}
 			
 		}
+		
+		//Flytter ballene en gang hvert tiende millisekund, kalles av mainmetoden
+		private void moveBalls(){
+			for(Ball ball: balls){
+				ball.moveBall();
+			}
+		}
+		
+		//Flytter veggene en gang hvert tiende millisekund, kalles av mainmetoden
+			private void moveWalls(){
+				for(Wall wall: walls){
+					wall.moveWall();
+				}
+			}
 
 	public static void main(String[] args) throws InterruptedException{
+//		boolean host = false;
 		JFrame frame = new JFrame(NAMEOFGAME);
 		Main game = new Main();
 		frame.add(game);
@@ -55,10 +69,20 @@ public class Main extends JPanel{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Ball ball1 = new Ball(38, 40, 37, 39, Color.PINK);
 		game.balls.add(ball1);
-		Ball ball2 = new Ball(87, 83, 65, 68, Color.CYAN);
-		game.balls.add(ball2);
+		Wall wall1 = new Wall(true,1,true);
+		game.walls.add(wall1);
+		Wall wall2 = new Wall(true,1,false);
+		game.walls.add(wall2);
+//		Ball ball2 = new Ball(87, 83, 65, 68, Color.CYAN);
+//		game.balls.add(ball2);
+//		if(host == true){
+//			Host myHost = new Host();
+//		}else{
+//			Client client = new Client("localhost", 27182);
+//		}
 		while(true){
-			game.moveBall();
+			game.moveBalls();
+			game.moveWalls();
 			game.repaint();
 			Thread.sleep(10);
 		}
