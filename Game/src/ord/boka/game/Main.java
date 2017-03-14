@@ -61,6 +61,7 @@ public class Main extends JPanel{
 
 	public static void main(String[] args) throws InterruptedException{
 //		boolean host = false;
+		int wallSpeed = HEIGHT/500;
 		JFrame frame = new JFrame(NAMEOFGAME);
 		Main game = new Main();
 		frame.add(game);
@@ -69,9 +70,9 @@ public class Main extends JPanel{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Ball ball1 = new Ball(38, 40, 37, 39, Color.PINK);
 		game.balls.add(ball1);
-		Wall wall1 = new Wall(true,1,true);
+		Wall wall1 = new Wall(true,wallSpeed,true);
 		game.walls.add(wall1);
-		Wall wall2 = new Wall(true,1,false);
+		Wall wall2 = new Wall(true,wallSpeed,false);
 		game.walls.add(wall2);
 //		Ball ball2 = new Ball(87, 83, 65, 68, Color.CYAN);
 //		game.balls.add(ball2);
@@ -83,9 +84,20 @@ public class Main extends JPanel{
 		while(true){
 			game.moveBalls();
 			game.moveWalls();
+			game.checkForCollisions();
 			game.repaint();
 			Thread.sleep(10);
 		}
+	}
+	private void checkForCollisions() {
+		for(Ball ball : balls){
+			for(Wall wall: walls){
+				if(wall.checkForCollision(ball)==true){
+					System.out.println("Colliding");
+				}
+			}
+		}
+		
 	}
 	public class MyKeyListener implements KeyListener {
 		@Override

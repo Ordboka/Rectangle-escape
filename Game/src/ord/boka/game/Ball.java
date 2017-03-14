@@ -58,7 +58,12 @@ public class Ball implements DrawableObject{
 	public Color getColor(){
 		return color;
 	}
-	
+	public int getCenterX(){
+		return getX()+BALLDIAMETER/2;
+	}
+	public int getCenterY(){
+		return getY()+BALLDIAMETER/2;
+	}
 	public int getBallXSpeed() {
 		return ballXSpeed;
 	}
