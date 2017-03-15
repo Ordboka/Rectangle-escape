@@ -60,27 +60,13 @@ public class Main extends JPanel{
 			}
 
 	public static void main(String[] args) throws InterruptedException{
-//		boolean host = false;
-		int wallSpeed = HEIGHT/500;
 		JFrame frame = new JFrame(NAMEOFGAME);
 		Main game = new Main();
 		frame.add(game);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Ball ball1 = new Ball(38, 40, 37, 39, Color.PINK);
-		game.balls.add(ball1);
-		Wall wall1 = new Wall(true,wallSpeed,true);
-		game.walls.add(wall1);
-		Wall wall2 = new Wall(true,wallSpeed,false);
-		game.walls.add(wall2);
-//		Ball ball2 = new Ball(87, 83, 65, 68, Color.CYAN);
-//		game.balls.add(ball2);
-//		if(host == true){
-//			Host myHost = new Host();
-//		}else{
-//			Client client = new Client("localhost", 27182);
-//		}
+		game.startNewGame();
 		while(true){
 			game.moveBalls();
 			game.moveWalls();
@@ -90,15 +76,43 @@ public class Main extends JPanel{
 		}
 	}
 	private void checkForCollisions() {
+		Collection<Ball> collidingBalls = new ArrayList<Ball>();
 		for(Ball ball : balls){
 			for(Wall wall: walls){
 				if(wall.checkForCollision(ball)==true){
-					System.out.println("Colliding");
+					collidingBalls.add(ball);
 				}
 			}
 		}
-		
+		for(Ball ball: collidingBalls){
+			balls.remove(ball);
+		}
+		if(balls.size()==0){
+			this.startNewGame();
+		}
 	}
+	
+	public void startNewGame(){
+		int wallSpeed = HEIGHT/500;
+		for(Wall wall: walls){
+			wall = null;
+		}
+		walls.clear();
+		Ball ball1 = new Ball(38, 40, 37, 39, Color.PINK);
+		this.balls.add(ball1);
+		Wall wall1 = new Wall(true,wallSpeed,true);
+		this.walls.add(wall1);
+		Wall wall2 = new Wall(true,wallSpeed,false);
+		this.walls.add(wall2);
+		Ball ball2 = new Ball(87, 83, 65, 68, Color.CYAN);
+		this.balls.add(ball2);
+//		if(host == true){
+//			Host myHost = new Host();
+//		}else{
+//			Client client = new Client("localhost", 27182);
+//		}
+	}
+	
 	public class MyKeyListener implements KeyListener {
 		@Override
 		public void keyTyped(KeyEvent e) {
