@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +21,8 @@ public class Main extends JPanel{
 		public final static int WIDTH = 500, HEIGHT = 500;
 		private Collection<Ball> balls = new ArrayList<Ball>();
 		private Collection<Wall> walls = new ArrayList<Wall>();
+		private Collection<Wall> wallsToBeRemoved = new ArrayList<Wall>();
+		public double wallSpeed;
 		
 		public Main(){
 			setPreferredSize(new Dimension(WIDTH,HEIGHT));
@@ -57,6 +60,7 @@ public class Main extends JPanel{
 				for(Wall wall: walls){
 					wall.moveWall();
 				}
+				removeWalls();
 			}
 
 	public static void main(String[] args) throws InterruptedException{
@@ -93,17 +97,15 @@ public class Main extends JPanel{
 	}
 	
 	public void startNewGame(){
-		int wallSpeed = HEIGHT/500;
+		wallSpeed = HEIGHT/250;
 		for(Wall wall: walls){
 			wall = null;
 		}
 		walls.clear();
+		makeNewWall(true);
+		makeNewWall(false);
 		Ball ball1 = new Ball(38, 40, 37, 39, Color.PINK);
 		this.balls.add(ball1);
-		Wall wall1 = new Wall(true,wallSpeed,true);
-		this.walls.add(wall1);
-		Wall wall2 = new Wall(true,wallSpeed,false);
-		this.walls.add(wall2);
 		Ball ball2 = new Ball(87, 83, 65, 68, Color.CYAN);
 		this.balls.add(ball2);
 //		if(host == true){
@@ -111,6 +113,31 @@ public class Main extends JPanel{
 //		}else{
 //			Client client = new Client("localhost", 27182);
 //		}
+	}
+	
+	public void makeNewWall(boolean vertical){
+		Random random = new Random();
+		System.out.println(wallSpeed);
+		int hole = (int) (random.nextInt( (int) (WIDTH*0.4))+WIDTH*0.3);
+		Wall wall1 = new Wall(vertical,wallSpeed,true,hole,this);
+		this.walls.add(wall1);
+		Wall wall2 = new Wall(vertical,wallSpeed,false,hole,this);
+		this.walls.add(wall2);
+		wallSpeed+= (double) (HEIGHT)/10000;
+	}
+	
+	public void removeWall(boolean vertical, Wall wall) {
+		wallsToBeRemoved.add(wall);
+	}
+	
+	public void removeWalls(){
+		for(Wall wall: wallsToBeRemoved){
+			if(wall.isTop()==true){
+				makeNewWall(wall.isVertical());
+			}
+			walls.remove(wall);
+		}
+		wallsToBeRemoved.clear();
 	}
 	
 	public class MyKeyListener implements KeyListener {
@@ -124,7 +151,6 @@ public class Main extends JPanel{
 				//Sjekker hvilken knapp som ble trykket, og om den allerede beveger seg i denne retningen.
 				//hvis dette er tilfelle vil ikke bevegelsen endre seg
 				if(e.getKeyCode()==ball.getUp() && ball.getBallYSpeed()==0){
-					System.out.println(ball.getUp());
 					ball.upPressed();
 				}else if(e.getKeyCode()==ball.getDown() && ball.getBallYSpeed()==0){
 					ball.downPressed();
@@ -135,7 +161,7 @@ public class Main extends JPanel{
 				}
 				
 			}
-			System.out.println("keyPressed="+KeyEvent.getKeyText(e.getKeyCode())+ ". The code is " + e.getKeyCode());
+//			System.out.println("keyPressed="+KeyEvent.getKeyText(e.getKeyCode())+ ". The code is " + e.getKeyCode());
 		}
 
 		@Override
@@ -148,7 +174,10 @@ public class Main extends JPanel{
 					ball.xReleased();
 				}
 			}
-			System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
+//			System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
 		}
+		
 	}
+
+
 }

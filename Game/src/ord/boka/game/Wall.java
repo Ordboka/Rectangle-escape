@@ -1,28 +1,26 @@
 package ord.boka.game;
 
 import java.awt.Color;
+import java.util.Random;
 
 public class Wall implements DrawableObject{
 	//Bestemmer om veggen skal bevege seg vertikalt eller horisontalt
 	private boolean vertical, top;
 	//Bryr seg bare om kordinaten i den retningen den beveger seg.
-	private int xCorner, yCorner;
-	private int speed;
+	private double xCorner, yCorner;
+	private double speed;
 	private int holeCoordinate;
 	private static final int WIDTH = Main.WIDTH/20;
 	private static final int HOLEWIDTH = Main.WIDTH/10;
 	private Color color = Color.green;
+	Main game;
 	
-	public Wall(boolean vertical,int speed, boolean top) {
+	public Wall(boolean vertical,double speed, boolean top, int holeCoordinate, Main game) {
 		this.vertical = vertical;
 		this.speed = speed;
 		this.top = top;
-		//Må fylles ut for å gi tilfeldig hullkordinat
-		if(vertical){
-			holeCoordinate = Main.WIDTH/2;
-		}else{
-			holeCoordinate = Main.HEIGHT/2;
-		}
+		this.holeCoordinate = holeCoordinate;
+		this.game = game;
 		if(top){
 		//Hvis den beveger seg vertikalt skal bare y-koordinaten endre seg. Ellers bare x
 			if(vertical){
@@ -48,7 +46,7 @@ public class Wall implements DrawableObject{
 		if(vertical){
 			yCorner+=speed;
 			if(yCorner>Main.HEIGHT+Main.HEIGHT/20){
-				yCorner = 0-WIDTH;
+				game.removeWall(vertical, this);
 			}
 		}else{
 			xCorner+=speed;
@@ -59,24 +57,51 @@ public class Wall implements DrawableObject{
 	}
 	
 	public int getX(){
-		return xCorner;
+		return (int)xCorner;
 	}
 	public int getY(){
-		return yCorner;
+		return (int)yCorner;
 	}
 	public int getHeight(){
-		if(vertical){
-			return WIDTH;
+		if(top){
+			if(vertical){
+				return WIDTH;
+			}else{
+				return holeCoordinate-HOLEWIDTH/2;
+			}
 		}else{
-			return holeCoordinate-HOLEWIDTH/2;
+			if(vertical){
+				return WIDTH;
+			}else{
+				return Main.HEIGHT-(holeCoordinate+HOLEWIDTH/2);
+			}
 		}
+		
 	}
+	
+	public boolean isTop(){
+		return top;
+	}
+	
+	public boolean isVertical(){
+		return vertical;
+	}
+	
 	public int getWidth(){
-		if(vertical){
-			return holeCoordinate-HOLEWIDTH/2;
+		if(top){
+			if(vertical){
+				return holeCoordinate-HOLEWIDTH/2;
+			}else{
+				return WIDTH;
+			}
 		}else{
-			return WIDTH;
+			if(vertical){
+				return Main.WIDTH-(holeCoordinate+HOLEWIDTH/2);
+			}else{
+				return WIDTH;
+			}
 		}
+		
 	}
 
 
