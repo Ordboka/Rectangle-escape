@@ -1,7 +1,6 @@
 package ord.boka.game;
 
 import java.awt.Color;
-import java.util.Random;
 
 public class Wall implements DrawableObject{
 	//Bestemmer om veggen skal bevege seg vertikalt eller horisontalt
@@ -10,12 +9,12 @@ public class Wall implements DrawableObject{
 	private double xCorner, yCorner;
 	private double speed;
 	private int holeCoordinate;
-	private static final int WIDTH = Main.WIDTH/20;
-	private static final int HOLEWIDTH = Main.WIDTH/10;
+	public static final int WIDTH = Main.WIDTH/20;
+	private static final int HOLEWIDTH = Main.WIDTH/8;
 	private Color color = Color.green;
 	Main game;
 	
-	public Wall(boolean vertical,double speed, boolean top, int holeCoordinate, Main game) {
+	public Wall(boolean vertical,double speed, boolean top, int holeCoordinate, Main game, int cornerCoordinate) {
 		this.vertical = vertical;
 		this.speed = speed;
 		this.top = top;
@@ -25,17 +24,17 @@ public class Wall implements DrawableObject{
 		//Hvis den beveger seg vertikalt skal bare y-koordinaten endre seg. Ellers bare x
 			if(vertical){
 				xCorner = 0;
-				yCorner = 0-WIDTH;
+				yCorner = cornerCoordinate;
 			}else{
-				xCorner = 0-WIDTH;
+				xCorner =  cornerCoordinate;
 				yCorner = 0;
 			}
 		}else{
 			if(vertical){
 				xCorner = holeCoordinate+HOLEWIDTH/2;
-				yCorner = 0-WIDTH;
+				yCorner =  cornerCoordinate;
 			}else{
-				xCorner = 0-WIDTH;
+				xCorner =  cornerCoordinate;
 				yCorner = holeCoordinate+HOLEWIDTH/2;
 			}
 		}
@@ -51,7 +50,7 @@ public class Wall implements DrawableObject{
 		}else{
 			xCorner+=speed;
 			if(xCorner>Main.WIDTH+Main.WIDTH/20){
-				xCorner = 0-WIDTH;
+				game.removeWall(vertical, this);
 			}
 		}
 	}

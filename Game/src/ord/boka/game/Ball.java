@@ -13,7 +13,7 @@ public class Ball implements DrawableObject{
 	public final static int BALLDIAMETER = 20;
 	private int ballX = Main.WIDTH/2-BALLDIAMETER/2,ballY= Main.HEIGHT/2-BALLDIAMETER/2;
 	private int ballXSpeed = 0, ballYSpeed= 0;
-	private double speedIncrease = 2;
+	private double speedIncrease = 3;
 	
 	/**
 	 * Constructor for Ball where the keys used for moving the ball is given together with the color used.
